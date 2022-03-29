@@ -10,7 +10,6 @@ import time
 import board
 import adafruit_dht
 import requests
-import json
 import os
 import paho.mqtt.client as paho
 
@@ -25,35 +24,34 @@ dhtDevice = adafruit_dht.DHT22(board.D4)
 # but it will not work in CircuitPython.
 # dhtDevice = adafruit_dht.DHT22(board.D18, use_pulseio=False)
 
-mqtt_client=paho.Client("pluto")
-mqtt_client.connect(broker,port)
+mqtt_client=paho.Client("pluto-dht22")
 
 while True:
-    try:
-        print("----------------------------")
-        temperature = dhtDevice.temperature
-        humidity = dhtDevice.humidity
-        print("Temp: {:.1f}C  Humidity: {}% ".format(temperature, humidity))
+    mqtt_client.connect(broker,port)
 
-        ret=mqtt_client.publish("pluto/temperature", json.dumps({'temperature': temperature}))
-        print("Temperature Returned {}".format(ret))
+    while True:
+        try:
+            print("----------------------------")
+            temperature = dhtDevice.temperature
+            humidity = dhtDevice.humidity
+            print("Temp: {:.1f}C  Humidity: {}% ".format(temperature, humidity))
 
-        ret=mqtt_client.publish("pluto/humidity", json.dumps({'humidity': humidity}))
-        print("Humidity Returned {}".format(ret))
+            ret=mqtt_client.publish("pluto/dht22/temperature", temperature)
+            print("Published temperature. Client returned: {}".format(ret))
+
+            ret=mqtt_client.publish("pluto/dht22/humidity", humidity)
+            print("Published humidity. Client returned: {}".format(ret))
 
 
-    except requests.exceptions.RequestException as error:
-        print(error)
-        time.sleep(10.0)
-        continue
+        except RuntimeError as error:
+            # Errors happen fairly often, DHT's are hard to read, just keep going
+            print(error.args[0])
+            time.sleep(2.0)
+            continue
+        except Exception as error:
+            dhtDevice.exit()
+            raise error
 
-    except RuntimeError as error:
-        # Errors happen fairly often, DHT's are hard to read, just keep going
-        print(error.args[0])
-        time.sleep(2.0)
-        continue
-    except Exception as error:
-        dhtDevice.exit()
-        raise error
+        time.sleep(60.0)
 
     time.sleep(10.0)
