@@ -24,7 +24,7 @@ dhtDevice = adafruit_dht.DHT22(board.D4)
 # but it will not work in CircuitPython.
 # dhtDevice = adafruit_dht.DHT22(board.D18, use_pulseio=False)
 
-mqtt_client=paho.Client("pluto-dht22")
+mqtt_client=paho.Client(client_id="pluto-dht22")
 
 def on_connect(client, userdata, flags, rc):
     print("Connected: {}".format(paho.connack_string(rc)))
@@ -64,3 +64,4 @@ while True:
         raise error
 
     time.sleep(5.0)
+
