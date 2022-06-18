@@ -39,16 +39,16 @@ mqtt_client.loop_start()
 
 while True:
     try:
-        print("----------------------------")
+        #print("----------------------------")
         temperature = dhtDevice.temperature
         humidity = dhtDevice.humidity
         print("Temp: {:.1f}C  Humidity: {}% ".format(temperature, humidity))
 
-        rc,_=mqtt_client.publish("pluto/dht22/temperature", temperature)
+        rc,_=mqtt_client.publish("pluto/dht22/temperature", temperature, retain=True)
         if rc != 0:
             print("Publish temperature error: {}".format(paho.error_string(rc)))
-        
-        rc,_=mqtt_client.publish("pluto/dht22/humidity", humidity)
+
+        rc,_=mqtt_client.publish("pluto/dht22/humidity", humidity, retain=True)
         if rc != 0:
             print("Publish humidity error: {}".format(paho.error_string(rc)))
 
@@ -63,5 +63,5 @@ while True:
         mqtt_client.loop_stop()
         raise error
 
-    time.sleep(5.0)
+    time.sleep(60.0)
 
