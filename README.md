@@ -1,5 +1,7 @@
 # DHT-MQTT
-Read humidity and temperature measurements from an DHT11/DHT22/AM2302 sensor and publish them to an MQTT broker.
+Read humidity and temperature measurements from a DHT11/DHT22 sensor connected to a Raspberry Pi and publish them to an MQTT broker.
+
+It also supports the AM2302 sensor, which is the wired version of DHT22.
 
 ## Run as a service
 ### Install
@@ -18,6 +20,11 @@ cd dht-mqtt
 
 2. Update `config.env`
 Set the right values.
+
+* `BROKER` (string) is the MQTT broker's host name or IP address
+* `BROKER_PORT` (integer) is the MQTT broker's port
+* `PIN` (integer) is the GPIO pin number that the sensor data wire port is connected to. The python board module can be used to list available pins on the board. Learn more [here](https://learn.adafruit.com/circuitpython-digital-inputs-and-outputs/board-pins).
+* `SENSOR` (string) is the sensor type. It should be either of: DHT11, DHT22, DHT21
 
 3. Run to test:
 ```
@@ -44,6 +51,8 @@ Check the logs:
 ```bash
 journalctl -u dht-mqtt -n 100 -f
 ```
+
+Use `systemctl restart dht-mqtt` to load new configurations.
 
 ## Run in a Docker container
 WIP

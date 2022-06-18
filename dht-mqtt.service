@@ -1,5 +1,5 @@
 [Unit]
-Description=Publish DHT11/DHT22/AM2302 readings to MQTT broker
+Description=Publish DHT11/DHT22 readings to MQTT broker
 After=network.target
 
 [Service]
