@@ -7,4 +7,4 @@ set -o allexport
 source $DIR/config.env set
 set +o allexport
 
-python -u $DIR/dht22-mqtt.py
+python -u $DIR/dht-mqtt.py

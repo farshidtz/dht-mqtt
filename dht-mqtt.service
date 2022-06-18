@@ -1,0 +1,13 @@
+[Unit]
+Description=Publish DHT11/DHT22/AM2302 readings to MQTT broker
+After=network.target
+
+[Service]
+Type=simple
+Restart=on-failure
+User=pi
+WorkingDirectory=/home/pi/dht-mqtt
+ExecStart=/home/pi/dht-mqtt/run.sh
+
+[Install]
+WantedBy=multi-user.target
