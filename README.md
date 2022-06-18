@@ -13,12 +13,14 @@ sudo apt-get install libgpiod2
 
 ### Configure and run as a service
 1. Clone and enter the directory
+
 ```bash
 git clone xxx
 cd dht-mqtt
 ```
 
 2. Update `config.env`
+
 Set the right values.
 
 * `BROKER` (string) is the MQTT broker's host name or IP address
@@ -27,14 +29,16 @@ Set the right values.
 * `SENSOR` (string) is the sensor type. It should be either of: DHT11, DHT22, DHT21
 
 3. Run to test:
+
 ```
 ./run.sh
 ```
 
-3. Turn into a service
+4. Turn into a service
+
 We use the `dht-mqtt.service` file to create the service.
 In the service file, the path for the `run.sh` script is set to `/home/pi/dht-mqtt/run.sh`.
-Modify the file to have the correct paths and user.
+Modify the file to have the correct path and user.
 
 Make a symbolic link to the service file:
 ```
