@@ -36,7 +36,7 @@ Set the right values.
 ./run.sh
 ```
 
-3. Turn into a service
+4. Turn into a service
 
 We use the `dht-mqtt.service` file to create the service.
 In the service file, the path for the `run.sh` script is set to `/home/pi/dht-mqtt/run.sh`.
