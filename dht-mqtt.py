@@ -11,9 +11,12 @@ import adafruit_dht
 import requests
 import os
 import paho.mqtt.client as paho
+import uuid
 
-broker=os.environ['BROKER']
-port=os.environ['BROKER_PORT']
+broker=os.environ['MQTT_BROKER']
+port=os.environ['MQTT_BROKER_PORT']
+topic_prefix=os.environ['MQTT_TOPIC_PREFIX']
+client_id_prefix=os.environ['MQTT_CLIENT_ID_PREFIX']
 pin=os.environ['PIN']
 sensor=os.environ['SENSOR']
 
@@ -21,7 +24,7 @@ sensor=os.environ['SENSOR']
 dhtDevice = getattr(adafruit_dht, sensor)(pin)
 
 # Initialize the MQTT client
-mqtt_client=paho.Client(client_id="pluto-dht22")
+mqtt_client=paho.Client(client_id=client_id_prefix+"-"+str(uuid.uuid4()))
 
 def on_connect(client, userdata, flags, rc):
     print("Connected: {}".format(paho.connack_string(rc)))
@@ -41,11 +44,11 @@ while True:
         humidity = dhtDevice.humidity
         print("Temp: {:.1f}C  Humidity: {}% ".format(temperature, humidity))
 
-        rc,_=mqtt_client.publish("pluto/dht22/temperature", temperature, retain=True)
+        rc,_=mqtt_client.publish(topic_prefix+"/temperature", temperature, retain=True)
         if rc != 0:
             print("Publish temperature error: {}".format(paho.error_string(rc)))
 
-        rc,_=mqtt_client.publish("pluto/dht22/humidity", humidity, retain=True)
+        rc,_=mqtt_client.publish(topic_prefix+"/humidity", humidity, retain=True)
         if rc != 0:
             print("Publish humidity error: {}".format(paho.error_string(rc)))
 
