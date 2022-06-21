@@ -19,7 +19,9 @@ git clone xxx
 cd dht-mqtt
 ```
 
-2. Update `config.env`
+2. Create `config.env`
+
+Copy from `config.env.example`.
 
 Set the right values.
 
