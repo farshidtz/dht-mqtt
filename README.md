@@ -4,10 +4,12 @@ Read humidity and temperature measurements from a DHT11/DHT22 sensor connected t
 It also supports the AM2302 sensor, which is the wired version of DHT22.
 
 ## Run as a service
+Requirement: Python 3, pip
+
 ### Install
 Install the [CircuitPython-DHT](https://github.com/adafruit/Adafruit_CircuitPython_DHT) library:
 ```bash
-pip3 install adafruit-circuitpython-dht
+pip3 install adafruit-circuitpython-dht paho-mqtt
 sudo apt-get install libgpiod2
 ```
 
