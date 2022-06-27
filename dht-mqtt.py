@@ -19,6 +19,7 @@ topic_prefix=os.environ['MQTT_TOPIC_PREFIX']
 client_id_prefix=os.environ['MQTT_CLIENT_ID_PREFIX']
 pin=os.environ['PIN']
 sensor=os.environ['SENSOR']
+interval=os.environ['INTERVAL']
 
 # Initialize the sensor at the given pin:
 dhtDevice = getattr(adafruit_dht, sensor)(pin)
@@ -44,11 +45,11 @@ while True:
         humidity = dhtDevice.humidity
         print("Temp: {:.1f}C  Humidity: {}% ".format(temperature, humidity))
 
-        rc,_=mqtt_client.publish(topic_prefix+"/temperature", temperature, retain=True)
+        rc,_=mqtt_client.publish(topic_prefix+"temperature", temperature, retain=True)
         if rc != 0:
             print("Publish temperature error: {}".format(paho.error_string(rc)))
 
-        rc,_=mqtt_client.publish(topic_prefix+"/humidity", humidity, retain=True)
+        rc,_=mqtt_client.publish(topic_prefix+"humidity", humidity, retain=True)
         if rc != 0:
             print("Publish humidity error: {}".format(paho.error_string(rc)))
 
@@ -63,5 +64,5 @@ while True:
         mqtt_client.loop_stop()
         raise error
 
-    time.sleep(60.0)
+    time.sleep(int(interval))
 
